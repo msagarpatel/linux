@@ -31,7 +31,7 @@ config MIPS
 	select GENERIC_CMOS_UPDATE
 	select GENERIC_CPU_AUTOPROBE
 	select GENERIC_FIND_FIRST_BIT
-	select GENERIC_GETTIMEOFDAY
+	select GENERIC_GETTIMEOFDAY if HAVE_GENERIC_VDSO
 	select GENERIC_IOMAP
 	select GENERIC_IRQ_PROBE
 	select GENERIC_IRQ_SHOW
@@ -65,12 +65,12 @@ config MIPS
 	select HAVE_DYNAMIC_FTRACE
 	select HAVE_EBPF_JIT if 64BIT && !CPU_MICROMIPS && TARGET_ISA_REV >= 2
 	select HAVE_EXIT_THREAD
-	select HAVE_FAST_GUP
+	select HAVE_FAST_GUP if MMU
 	select HAVE_FTRACE_MCOUNT_RECORD
 	select HAVE_FUNCTION_GRAPH_TRACER
 	select HAVE_FUNCTION_TRACER
 	select HAVE_GCC_PLUGINS
-	select HAVE_GENERIC_VDSO
+	select HAVE_GENERIC_VDSO if MMU
 	select HAVE_IOREMAP_PROT
 	select HAVE_IRQ_EXIT_ON_IRQ_STACK
 	select HAVE_IRQ_TIME_ACCOUNTING
@@ -3251,8 +3251,8 @@ config TC
 	  <http://www.linux-mips.org/wiki/DECstation>
 
 config MMU
-	bool
-	default y
+	bool "MMU support"
+	default n
 
 config ARCH_MMAP_RND_BITS_MIN
 	default 12 if 64BIT
