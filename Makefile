@@ -1,3 +1,7 @@
+# COMP 541 project
+ARCH=mips
+CROSS_COMPILE=mips-linux-gnu-
+
 # SPDX-License-Identifier: GPL-2.0
 VERSION = 5
 PATCHLEVEL = 14
