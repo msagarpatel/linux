@@ -12,7 +12,11 @@ typedef struct {
 		atomic64_t mmid;
 	};
 
+#ifdef CONFIG_MMU
 	void *vdso;
+#else
+	unsigned long end_brk;
+#endif
 
 	/* lock to be held whilst modifying fp_bd_emupage_allocmap */
 	spinlock_t bd_emupage_lock;
