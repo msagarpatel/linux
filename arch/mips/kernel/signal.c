@@ -801,15 +801,19 @@ struct mips_abi mips_abi = {
 	.off_sc_fpc_csr = offsetof(struct sigcontext, sc_fpc_csr),
 	.off_sc_used_math = offsetof(struct sigcontext, sc_used_math),
 
+#ifndef CONFIG_MIPS_DISABLE_VDSO
 	.vdso		= &vdso_image,
+#endif
 };
 
 static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
 {
+	int ret = 0;
+#ifndef CONFIG_MIPS_DISABLE_VDSO
 	sigset_t *oldset = sigmask_to_save();
-	int ret;
 	struct mips_abi *abi = current->thread.abi;
 	void *vdso = current->mm->context.vdso;
+#endif
 
 	/*
 	 * If we were emulating a delay slot instruction, exit that frame such
@@ -842,12 +846,15 @@ static void handle_signal(struct ksignal *ksig, struct pt_regs *regs)
 
 	rseq_signal_deliver(ksig, regs);
 
+// TODO: Do we need to do something when vdso is not used?
+#ifndef CONFIG_MIPS_DISABLE_VDSO
 	if (sig_uses_siginfo(&ksig->ka, abi))
 		ret = abi->setup_rt_frame(vdso + abi->vdso->off_rt_sigreturn,
 					  ksig, regs, oldset);
 	else
 		ret = abi->setup_frame(vdso + abi->vdso->off_sigreturn,
 				       ksig, regs, oldset);
+#endif
 
 	signal_setup_done(ret, ksig, 0);
 }

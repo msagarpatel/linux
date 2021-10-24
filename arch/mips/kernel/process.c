@@ -680,6 +680,7 @@ out:
 	return pc;
 }
 
+#ifndef CONFIG_MIPS_DISABLE_VDSO
 unsigned long mips_stack_top(void)
 {
 	unsigned long top = TASK_SIZE & PAGE_MASK;
@@ -704,6 +705,7 @@ unsigned long mips_stack_top(void)
 
 	return top;
 }
+#endif /* CONFIG_MIPS_DISABLE_VDSO */
 
 /*
  * Don't forget that the stack pointer must be aligned on a 8 bytes

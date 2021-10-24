@@ -7,6 +7,8 @@
 #ifndef __ASM_VDSO_H
 #define __ASM_VDSO_H
 
+#ifndef CONFIG_MIPS_DISABLE_VDSO
+
 #include <linux/mm_types.h>
 #include <vdso/datapage.h>
 
@@ -54,5 +56,7 @@ union mips_vdso_data {
 	struct vdso_data data[CS_BASES];
 	u8 page[PAGE_SIZE];
 };
+
+#endif /* CONFIG_MIPS_DISABLE_VDSO */
 
 #endif /* __ASM_VDSO_H */

@@ -43,6 +43,7 @@ static inline unsigned int rdhwr_count(void)
 	return count;
 }
 
+#ifndef CONFIG_MIPS_DISABLE_VDSO
 static bool rdhwr_count_usable(void)
 {
 	unsigned int prev, curr, i;
@@ -65,6 +66,7 @@ static bool rdhwr_count_usable(void)
 	pr_warn("Not using R4K clocksource in VDSO due to broken RDHWR\n");
 	return false;
 }
+#endif /* CONFIG_MIPS_DISABLE_VDSO */
 
 #ifdef CONFIG_CPU_FREQ
 
@@ -117,8 +119,10 @@ int __init init_r4k_clocksource(void)
 	 * R2 onwards makes the count accessible to user mode so it can be used
 	 * by the VDSO (HWREna is configured by configure_hwrena()).
 	 */
+#ifndef CONFIG_MIPS_DISABLE_VDSO
 	if (cpu_has_mips_r2_r6 && rdhwr_count_usable())
 		clocksource_mips.vdso_clock_mode = VDSO_CLOCKMODE_R4K;
+#endif
 
 	clocksource_register_hz(&clocksource_mips, mips_hpt_frequency);
 

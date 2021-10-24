@@ -6,12 +6,12 @@
 obj-y				+= cache.o
 obj-y				+= context.o
 obj-y				+= extable.o
-obj-y				+= fault.o
+obj-$(CONFIG_MMU)		+= fault.o
 obj-y				+= init.o
 obj-y				+= mmap.o
 obj-y				+= page.o
 obj-y				+= page-funcs.o
-obj-y				+= pgtable.o
+obj-$(CONFIG_MMU)		+= pgtable.o
 obj-y				+= tlbex.o
 obj-y				+= tlbex-fault.o
 obj-y				+= tlb-funcs.o
